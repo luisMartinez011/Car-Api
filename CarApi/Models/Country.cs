@@ -10,9 +10,13 @@ namespace CarApi.Models
 
         [Required]
         public string Name { get; set; }
-
         [Required]
-        public string Logo { get; set; }
+        [MaxLength(2)]
+        public string CountryCode { get; set; }
+
+        //El logo del pais se traera desde el frontend
+        [Required]
+        public string Flag { get; set; }
 
 
 

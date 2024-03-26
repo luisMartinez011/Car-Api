@@ -1,9 +1,13 @@
+using CarApi.Data.Config;
+using CarApi.Models;
+using CarApi.Models.SeederData;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -13,8 +17,14 @@ namespace CarApi.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private CarConfiguration carConfiguration;
+        private CountryConfiguration countryConfiguration;
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger,
+            CountryConfiguration _countryConfiguration, CarConfiguration _carConfiguration)
         {
+            countryConfiguration = _countryConfiguration;
+            carConfiguration = _carConfiguration;
             _logger = logger;
         }
 
@@ -28,6 +38,22 @@ namespace CarApi.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("/carData")]
+        public async Task<ActionResult<List<CarSeeder>>> GetCarritos()
+        {
+
+            
+            return await carConfiguration.GetCarDataAsync();
+        }
+
+        [HttpGet("/countryData")]
+        public  List<CountrySeeder> GetCountry()
+        {
+
+
+            return  countryConfiguration.GetCountryDataAsync();
         }
     }
 }

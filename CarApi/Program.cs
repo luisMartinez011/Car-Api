@@ -1,4 +1,6 @@
 using CarApi.Data;
+using CarApi.Data.Config;
+using CarApi.Shared;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,12 @@ var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
         x => x.MigrationsHistoryTable("_EfMigrations", Configuration.GetSection("Schema").GetSection("User").Value)));
+
+builder.Services.AddHttpClient("httpClient");
+builder.Services.AddSingleton<HttpClientRepository>();
+builder.Services.AddSingleton<ReadAndParseJson>();
+builder.Services.AddScoped<CarConfiguration>();
+builder.Services.AddSingleton<CountryConfiguration>();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using CarApi.Models;
+﻿using CarApi.Data.Config;
+using CarApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarApi.Data
@@ -7,6 +8,12 @@ namespace CarApi.Data
     {
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.ApplyConfiguration(new CountryConfiguration());
+        }
+
+        
 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Brand> Brands { get; set; }
