@@ -1,0 +1,17 @@
+[
+  {
+    "Id": 1,
+    "Name": "Chevrolet",
+    "Country": 60
+  },
+  {
+    "Id": 2,
+    "Name": "Nissan",
+    "Country": 92
+  },
+  {
+    "Id": 3,
+    "Name": "Ford",
+    "Country": 60
+  }
+]

@@ -6,11 +6,26 @@ namespace CarApi.Data
 {
     public class AppDbContext : DbContext
     {
+        private readonly CountryConfiguration countryConfiguration;
+        private readonly BrandConfiguration brandConfiguration;
+        private readonly CarConfiguration carConfiguration;
+        public AppDbContext(DbContextOptions<AppDbContext> options,
+            CountryConfiguration _countryConfiguration,
+            BrandConfiguration _brandConfiguration,
+            CarConfiguration _carConfiguration) : base(options) {
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+            countryConfiguration = _countryConfiguration;
+            brandConfiguration = _brandConfiguration;
+            carConfiguration = _carConfiguration;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.ApplyConfiguration(new CountryConfiguration());
+            
+            base.OnModelCreating(modelBuilder);
+            //modelBuilder.ApplyConfiguration(countryConfiguration);
+            countryConfiguration.Configure(modelBuilder.Entity<Country>());
+            brandConfiguration.Configure(modelBuilder.Entity<Brand>());
+            carConfiguration.Configure(modelBuilder.Entity<Car>());
         }
 
         

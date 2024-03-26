@@ -12,36 +12,76 @@ namespace CarApi.Data.Config
     public class CarConfiguration : IEntityTypeConfiguration<Car>
     {
 
-        private HttpClientRepository _httpRepository;
-        private IConfiguration configuration;
+        private string fileName = "Cars.json";
 
-        public CarConfiguration(HttpClientRepository httpRepository, IConfiguration iConfig)
+        public CarConfiguration()
         {
-            _httpRepository = httpRepository;
-            configuration = iConfig;
+
         }
 
         public void Configure(EntityTypeBuilder<Car> builder)
         {
-            
-            //builder.HasData(
-            //new Post { Id = 1, Author = "Oscar Montenegro", Title = "My first Post", Body = "Hello world, this is my first post" },
-            //    new Post { Id = 2, Author = "Oscar Montenegro", Title = "My second Post", Body = "Hello world, this is my second post" }
-            //);
+
+            List<CarSeeder> carSeeders = GetCarData();
+
+            List<Car> cars = new List<Car>();
+            int index = 1;
+            carSeeders.ForEach(carSeeder =>
+            {
+                int idBrand = 0;
+                switch (carSeeder.brand)
+                {
+                    case "Chevrolet":
+                        idBrand= 1;
+                        break;
+                    case "Nissan":
+                        idBrand = 2;
+                        break;
+                    case "Ford":
+                        idBrand = 3;
+                        break;
+                }
+                Car car = new Car
+                {
+                    IdCar = index,
+                    Name = carSeeder.model,
+                    Year = carSeeder.year,
+                    Price = carSeeder.price,
+                    Image = carSeeder.image,
+                    IdBrand = idBrand,
+                    CreatedAt = DateTime.UtcNow,
+                    ModifiedAt = DateTime.UtcNow,
+                };
+
+                cars.Add(car);
+                index++;
+            });
+
+
+            try
+            {
+                builder.HasData(cars);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
         }
 
-        public async Task<List<CarSeeder>> GetCarDataAsync()
+        public List<CarSeeder> GetCarData()
         {
-            string Url = configuration.GetValue<string>("SeederApis:Car:Url");
-            string KeyName = configuration.GetValue<string>("SeederApis:Car:KeyName");
-            string ApiKey = configuration.GetValue<string>("SeederApis:Car:ApiKey");
 
-            List<CarSeeder> carSeed = await _httpRepository.GetAsync<CarSeeder>(
-                Url,
-                KeyName,
-                ApiKey
-                );
-            return carSeed;
+            string currentDirectory = Directory.GetCurrentDirectory();
+
+            // Combine the current directory with the filename
+            string filePath = Path.Combine(currentDirectory, "Data", "Config", "JsonFiles", fileName);
+            ReadAndParseJson readAndParseJson = new ReadAndParseJson(filePath);
+
+            List<CarSeeder> countrySeed = readAndParseJson.ReadJson<CarSeeder>();
+
+            return countrySeed;
         }
     }
 }

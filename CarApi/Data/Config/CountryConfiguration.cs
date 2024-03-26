@@ -8,59 +8,60 @@ namespace CarApi.Data.Config
 {
     public class CountryConfiguration : IEntityTypeConfiguration<Country>
     {
-        private ReadAndParseJson readAndParseJson;
-        private IConfiguration configuration;
+        
         private string fileName = "Countries.json";
-
-        public CountryConfiguration(ReadAndParseJson _readAndParseJson, IConfiguration iConfig)
-        {
-            readAndParseJson = _readAndParseJson;
-            configuration = iConfig;
-        }
 
         public CountryConfiguration()
         {
-            
+
         }
 
         public void Configure(EntityTypeBuilder<Country> builder) {
-            List<CountrySeeder> countrySeeders = GetCountryDataAsync();
+            
+            List<CountrySeeder> countrySeeders = GetCountryData();
 
             List<Country> countries = new List<Country>();
+            int index = 1;
             countrySeeders.ForEach(countrySeeder =>
             {
-                Country country = new Country{
+                Country country = new Country { 
+                    IdCountry = index,
                     Name = countrySeeder.Country,
                     CountryCode = countrySeeder.Code,
                     Flag = countrySeeder.Flag,
-                    CreatedAt = DateTime.Today,
-                    ModifiedAt= DateTime.Today,
+                    CreatedAt = DateTime.UtcNow,
+                    ModifiedAt= DateTime.UtcNow,
                 };
+
+                countries.Add(country);
+                index++;
             });
 
-            builder.HasData(countries);
+            
+            try
+            {
+                builder.HasData(countries);
 
-            //builder.HasData(
-            //new Post { Id = 1, Author = "Oscar Montenegro", Title = "My first Post", Body = "Hello world, this is my first post" },
-            //    new Post { Id = 2, Author = "Oscar Montenegro", Title = "My second Post", Body = "Hello world, this is my second post" }
-            //);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
         }
 
-        public List<CountrySeeder> GetCountryDataAsync()
+        public List<CountrySeeder> GetCountryData()
         {
 
             string currentDirectory = Directory.GetCurrentDirectory();
 
             // Combine the current directory with the filename
-            string filePath = Path.Combine(currentDirectory, "Data", "Config", fileName);
+            string filePath = Path.Combine(currentDirectory, "Data", "Config", "JsonFiles", fileName);
+            ReadAndParseJson readAndParseJson = new ReadAndParseJson(filePath);
 
-            List<CountrySeeder> countrySeed = readAndParseJson.ReadJson<CountrySeeder>(filePath);
+            List<CountrySeeder> countrySeed = readAndParseJson.ReadJson<CountrySeeder>();
+            
             return countrySeed;
         }
-
-
-
-        
 
     }
 }

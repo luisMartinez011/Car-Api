@@ -41,11 +41,11 @@ namespace CarApi.Controllers
         }
 
         [HttpGet("/carData")]
-        public async Task<ActionResult<List<CarSeeder>>> GetCarritos()
+        public  List<CarSeeder> GetCarritos()
         {
 
             
-            return await carConfiguration.GetCarDataAsync();
+            return  carConfiguration.GetCarData();
         }
 
         [HttpGet("/countryData")]
@@ -53,7 +53,7 @@ namespace CarApi.Controllers
         {
 
 
-            return  countryConfiguration.GetCountryDataAsync();
+            return  countryConfiguration.GetCountryData();
         }
     }
 }

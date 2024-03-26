@@ -19,9 +19,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddHttpClient("httpClient");
 builder.Services.AddSingleton<HttpClientRepository>();
-builder.Services.AddSingleton<ReadAndParseJson>();
-builder.Services.AddScoped<CarConfiguration>();
+//builder.Services.AddSingleton<ReadAndParseJson>();
+builder.Services.AddSingleton<CarConfiguration>();
 builder.Services.AddSingleton<CountryConfiguration>();
+builder.Services.AddSingleton<BrandConfiguration>();
 
 var app = builder.Build();
 

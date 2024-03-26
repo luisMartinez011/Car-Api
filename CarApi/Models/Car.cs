@@ -14,8 +14,10 @@ namespace CarApi.Models
         public float Year { get; set; }
         [Required]
         public float Price { get; set; }
+        //[Required]
+        //public string Description { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string Image { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }

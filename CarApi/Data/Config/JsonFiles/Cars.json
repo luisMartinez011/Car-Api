@@ -1,0 +1,91 @@
+[
+  {
+    "brand": "Chevrolet",
+    "model": "Cavalier",
+    "price": 220.999,
+    "year": 2019,
+    "image": "https://images.prd.kavak.io/eyJidWNrZXQiOiJrYXZhay1pbWFnZXMiLCJrZXkiOiJpbWFnZXMvMzA1NDY4L0VYVEVSSU9SLWZyb250U2lkZVBpbG90TmVhci0xNzEwMjYyNDc4ODczLmpwZWciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjgxMCwiaGVpZ2h0Ijo0NjV9fX0="
+  },
+  {
+    "brand": "Chevrolet",
+    "model": "Aveo",
+    "price": 210.999,
+    "year": 2020,
+    "image": "https://www.chevrolet.com.mx/content/dam/chevrolet/na/mx/es/index/cars/2024-aveo-sedan/colorizer/01-images/rojo-metalico.jpg?imwidth=960"
+  },
+  {
+    "brand": "Chevrolet",
+    "model": "Trax",
+    "price": 217.999,
+    "year": 2016,
+    "image": "https://images.kavak.services/assets/images/families/chevrolet/trax-2013-2016-suv.png"
+  },
+  {
+    "brand": "Chevrolet",
+    "model": "Onix",
+    "price": 220.999,
+    "year": 2021,
+    "image": "https://d3s2hob8w3xwk8.cloudfront.net/autos-landing/chevrolet/onix-2021/colores/AZUL-PACIFICO.png"
+  },
+
+
+  {
+    "brand": "Nissan",
+    "model": "X-Trail",
+    "price": 315.999,
+    "year": 2017,
+    "image": "https://images.kavak.services/assets/images/families/nissan/x-trail-2015-2017-suv.png"
+  },
+  {
+    "brand": "Nissan",
+    "model": "Altima",
+    "price": 216.999,
+    "year": 2016,
+    "image": "https://wieck-nissanao-production.s3.amazonaws.com/photos/5b0b30b905a278c72e619ab8bcd7fdc33bd08f88/preview-928x522.jpg"
+  },
+  {
+    "brand": "Nissan",
+    "model": "Versa",
+    "price": 237.999,
+    "year": 2019,
+    "image": "https://images.kavak.services/assets/images/families/nissan/versa-2015-2019-sedan.png"
+  },
+  {
+    "brand": "Nissan",
+    "model": "Rogue",
+    "price": 206.999,
+    "year": 2016,
+    "image": "https://platform.cstatic-images.com/xlarge/in/v2/stock_photos/4e76df27-9d8d-4673-b870-1b76ad914ba7/0d0f491e-6cdb-4803-a30a-0495cc0f7b24.png"
+  },
+
+
+  {
+    "brand": "Ford",
+    "model": "Figo",
+    "price": 195.999,
+    "year": 2019,
+    "image": "https://acnews.blob.core.windows.net/imgnews/large/NAZ_8aa982c8ca9448559f09c9745499ed45.jpg"
+  },
+  {
+    "brand": "Ford",
+    "model": "Edge",
+    "price": 321.999,
+    "year": 2016,
+    "image": "https://www.cars.com/i/large/in/v2/stock_photos/92283502-8e37-4f02-88d0-cd4ba8403e95/83d3fa63-75fa-4fe1-8232-00c34a724eb8.png"
+  },
+  {
+    "brand": "Ford",
+    "model": "EcoSport",
+    "price": 222.999,
+    "year": 2017,
+    "image": "https://images.prd.kavak.io/eyJidWNrZXQiOiJrYXZhay1pbWFnZXMiLCJrZXkiOiJpbWFnZXMvMjkzMjUyL0VYVEVSSU9SLWZyb250U2lkZVBpbG90TmVhci0xNzA0NDgzMzQxNDg0LmpwZWciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjU0MCwiaGVpZ2h0IjozMTB9fX0="
+  },
+  {
+    "brand": "Ford",
+    "model": "Escape",
+    "price": 214.999,
+    "year": 2015,
+    "image": "https://cdn.wheel-size.com/automobile/body/ford-escape-2013-2016-1673340295.7682333.jpg"
+  }
+
+]
