@@ -3,6 +3,11 @@ using NuGet.DependencyResolver;
 
 namespace CarApi.Shared
 {
+    public interface IReadAndParseJson
+    {
+        List<T> ReadJson<T>();
+    }
+
     public class ReadAndParseJson : IReadAndParseJson
     {
         private string filePath;

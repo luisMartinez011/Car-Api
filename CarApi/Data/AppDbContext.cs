@@ -26,6 +26,11 @@ namespace CarApi.Data
             countryConfiguration.Configure(modelBuilder.Entity<Country>());
             brandConfiguration.Configure(modelBuilder.Entity<Brand>());
             carConfiguration.Configure(modelBuilder.Entity<Car>());
+
+            modelBuilder.Entity<User>()
+                .HasOne(e => e.UserAddress)
+                .WithOne(ed => ed.User)
+                .HasForeignKey<UserAddress>(ed => ed.IdUser);
         }
 
         

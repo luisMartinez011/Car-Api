@@ -17,7 +17,7 @@ namespace CarApi.Models
 
 
         [ForeignKey("User")]
-        public int IdUser { get; set; }
+        public Guid IdUser { get; set; }
         public User User { get; set; }
         [ForeignKey("Car")]
         public int Id_Car { get; set; }

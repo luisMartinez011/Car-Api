@@ -17,7 +17,7 @@ namespace CarApi.Models
 
 
         [ForeignKey("User")]
-        public int IdUser { get; set; }
+        public Guid IdUser { get; set; }
         public User User { get; set; }
 
         public ICollection<OrderItem> OrderItem { get; set; }

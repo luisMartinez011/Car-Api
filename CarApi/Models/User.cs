@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarApi.Models
 {
@@ -6,7 +8,8 @@ namespace CarApi.Models
     {
         [Key]
         [Required]
-        public int IdUser { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid IdUser { get; set; }
 
         [Required]
         public string Email { get; set; }
@@ -15,17 +18,17 @@ namespace CarApi.Models
         public string Username { get; set; }
 
         [Required]
-        public int FirstName { get; set; }
+        public string FirstName { get; set; }
         
         [Required]
-        public int LastName { get; set; }
+        public string LastName { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
-        public DateTime ModifiedAt { get; set; }
+        public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<UserAddress> UserAddresses { get; set; }
+        public UserAddress UserAddress { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
 

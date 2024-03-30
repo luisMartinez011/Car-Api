@@ -9,7 +9,7 @@ namespace CarApi.Models
         [Key]
         public int IdUserAddress { get; set; }
         [Required]
-        public string AddressKey { get; set; }
+        public string Address{ get; set; }
         [Required]
         public string City { get; set; }
         [Required]
@@ -18,12 +18,12 @@ namespace CarApi.Models
         public int Telephone { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
-        public DateTime ModifiedAt { get; set; }
+        public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey("User")]
-        public int IdUser { get; set; }
+
+        public Guid IdUser { get; set; }
         public User User { get; set; }
 
 

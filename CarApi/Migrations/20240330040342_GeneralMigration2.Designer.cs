@@ -3,6 +3,7 @@ using System;
 using CarApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240330040342_GeneralMigration2")]
+    partial class GeneralMigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace CarApi.Migrations
 
                     b.HasIndex("Id_Car");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("CarApi.Models.Brand", b =>
@@ -79,7 +82,7 @@ namespace CarApi.Migrations
 
                     b.HasIndex("IdCountry");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
 
                     b.HasData(
                         new
@@ -143,7 +146,7 @@ namespace CarApi.Migrations
 
                     b.HasIndex("IdBrand");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
 
                     b.HasData(
                         new
@@ -309,7 +312,7 @@ namespace CarApi.Migrations
 
                     b.HasKey("IdCountry");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -2057,7 +2060,7 @@ namespace CarApi.Migrations
 
                     b.HasIndex("IdUser");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("CarApi.Models.OrderItem", b =>
@@ -2095,7 +2098,7 @@ namespace CarApi.Migrations
 
                     b.HasIndex("OrderDetailIdOrderDetail");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("CarApi.Models.User", b =>
@@ -2130,7 +2133,7 @@ namespace CarApi.Migrations
 
                     b.HasKey("IdUser");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CarApi.Models.UserAddress", b =>
@@ -2174,7 +2177,7 @@ namespace CarApi.Migrations
                     b.HasIndex("IdUser")
                         .IsUnique();
 
-                    b.ToTable("UserAddresses", (string)null);
+                    b.ToTable("UserAddresses");
                 });
 
             modelBuilder.Entity("CarApi.Models.Appointment", b =>
