@@ -1,5 +1,6 @@
 ﻿using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
+using Amazon.Extensions.CognitoAuthentication;
 using CarApi.DTOs;
 using CarApi.Models;
 using System.Net;
@@ -20,13 +21,17 @@ namespace CarApi.Data.Repositories
         private readonly AppDbContext _dbContext;
         private readonly IAmazonCognitoIdentityProvider _cognitoService;
         private readonly string clientId;
+        private readonly CognitoUserPool _userPool;
 
-        public AuthRepository(AppDbContext dbContext, IAmazonCognitoIdentityProvider cognitoService, 
+        public AuthRepository(AppDbContext dbContext,
+            IAmazonCognitoIdentityProvider cognitoService, 
+            CognitoUserPool userPool,
             IConfiguration configuration) 
         {
+            _userPool = userPool;
             _dbContext = dbContext;
             _cognitoService = cognitoService;
-            clientId = configuration.GetValue<string>("Cognito:ClientId");
+            clientId = configuration.GetValue<string>("AWS:AppClientId");
         }
 
         public async void ListUserPoolsAsync()

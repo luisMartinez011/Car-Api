@@ -6,6 +6,14 @@ using CarApi.Shared;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols;
+using Newtonsoft.Json;
+using System.Net;
+using System.IdentityModel.Tokens.Jwt;
+using Amazon.Extensions.NETCore.Setup;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +41,45 @@ builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 
 
 // Aws configuration
-builder.Services.AddAWSService<IAmazonCognitoIdentityProvider>();
+//builder.Services.AddAWSService<IAmazonCognitoIdentityProvider>();
+builder.Services.AddCognitoIdentity();
+
+var PoolId = Configuration.GetValue<string>("AWS:UserPoolId");
+var ClientId = Configuration.GetValue<string>("AWS:UserPoolClientId");
+var RegionId = Configuration.GetValue<string>("AWS:RegionId");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    //.AddCookie(cfg => cfg.SlidingExpiration = true)
+.AddJwtBearer(options =>
+{
+    options.Authority = $"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_QA6faDa0M";
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+        {
+            // get JsonWebKeySet from AWS
+            var json = new WebClient().DownloadString($"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_QA6faDa0M/.well-known/jwks.json");
+            // serialize the result
+            var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(json).Keys;
+            // cast the result to be the type expected by IssuerSigningKeyResolver
+            return (IEnumerable<SecurityKey>)keys;
+        },
+        ValidateIssuer = true,
+        ValidIssuer= $"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_QA6faDa0M",
+        ValidateLifetime= true,
+        ValidateIssuerSigningKey = true,
+        ValidateAudience = false,
+    };
+    //options.Configuration = new OpenIdConnectConfiguration();
+    //options.RequireHttpsMetadata = false;
+    //options.SaveToken = true;
+});
+
+//builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -46,8 +92,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
