@@ -1,9 +1,11 @@
 using CarApi.Data.Config;
+using CarApi.Middlewares;
 using CarApi.Models;
 using CarApi.Models.SeederData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CarApi.Controllers
 {
@@ -29,10 +31,12 @@ namespace CarApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet("GetWeatherForecast/{id}")]
         [Authorize]
-        public IEnumerable<WeatherForecast> Get()
+        [ClaimAuthorizationFilter("username", "id")]
+        public IEnumerable<WeatherForecast> Get( string id)
         {
+            Console.WriteLine(id);
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

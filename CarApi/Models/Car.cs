@@ -20,15 +20,15 @@ namespace CarApi.Models
         public string Image { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
-        public DateTime ModifiedAt { get; set; }
+        public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
         [ForeignKey("Brand")]
         public int IdBrand { get; set; }
         public Brand Brand { get; set; }
 
-        public ICollection<OrderItem> OrderItem { get; set; }
+        //public ICollection<OrderItem> OrderItem { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
     }
 }

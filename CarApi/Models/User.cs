@@ -29,7 +29,7 @@ namespace CarApi.Models
         public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
         public UserAddress UserAddress { get; set; }
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        //public ICollection<OrderDetail> OrderDetails { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
 
     }

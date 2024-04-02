@@ -14,18 +14,39 @@ using Newtonsoft.Json;
 using System.Net;
 using System.IdentityModel.Tokens.Jwt;
 using Amazon.Extensions.NETCore.Setup;
+using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddFluentValidation(config =>
-{
-    config.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-}); ;
+builder.Services.AddControllers()
+    .AddJsonOptions(o => {
+        o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    })
+    .AddFluentValidation(config =>
+    {
+        config.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    }); 
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Verificacion V1",
+        //Description = "A demo of a number of concepts for developing an API using ASP.NET Core and Entity Framework",
+        
+    });
+
+    var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+});
 
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -44,9 +65,6 @@ builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 //builder.Services.AddAWSService<IAmazonCognitoIdentityProvider>();
 builder.Services.AddCognitoIdentity();
 
-var PoolId = Configuration.GetValue<string>("AWS:UserPoolId");
-var ClientId = Configuration.GetValue<string>("AWS:UserPoolClientId");
-var RegionId = Configuration.GetValue<string>("AWS:RegionId");
 
 builder.Services.AddAuthentication(options =>
 {
@@ -56,30 +74,24 @@ builder.Services.AddAuthentication(options =>
     //.AddCookie(cfg => cfg.SlidingExpiration = true)
 .AddJwtBearer(options =>
 {
-    options.Authority = $"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_QA6faDa0M";
+    var PoolId = Configuration.GetValue<string>("AWS:UserPoolId");
+    var ClientId = Configuration.GetValue<string>("AWS:UserPoolClientId");
+    var Region = Configuration.GetValue<string>("AWS:Region");
+
+    options.Authority = $"https://cognito-idp.{Region}.amazonaws.com/{PoolId}";
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
-        {
-            // get JsonWebKeySet from AWS
-            var json = new WebClient().DownloadString($"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_QA6faDa0M/.well-known/jwks.json");
-            // serialize the result
-            var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(json).Keys;
-            // cast the result to be the type expected by IssuerSigningKeyResolver
-            return (IEnumerable<SecurityKey>)keys;
-        },
+       
         ValidateIssuer = true,
-        ValidIssuer= $"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_QA6faDa0M",
-        ValidateLifetime= true,
-        ValidateIssuerSigningKey = true,
+        ValidIssuer= $"https://cognito-idp.{Region}.amazonaws.com/{PoolId}",
+        ValidateLifetime = true,
+        LifetimeValidator =(before, expires, token, param) => expires > DateTime.UtcNow,
+        
         ValidateAudience = false,
     };
-    //options.Configuration = new OpenIdConnectConfiguration();
-    //options.RequireHttpsMetadata = false;
-    //options.SaveToken = true;
 });
 
-//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -87,7 +99,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Verificacion V1"));
+
 }
 
 app.UseHttpsRedirection();

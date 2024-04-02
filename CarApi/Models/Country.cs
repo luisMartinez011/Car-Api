@@ -22,9 +22,9 @@ namespace CarApi.Models
 
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
-        public DateTime ModifiedAt { get; set; }
+        public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<UserAddress> UserAddresses { get; set; }
         public ICollection<Brand> Brands { get; set; }

@@ -11,16 +11,16 @@ namespace CarApi.Models
         public DateTime Date { get; set; }
 
         [Required]
-        public DateTime Created_at { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
-        public DateTime Modified_at { get; set; }
+        public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
 
         [ForeignKey("User")]
         public Guid IdUser { get; set; }
         public User User { get; set; }
         [ForeignKey("Car")]
-        public int Id_Car { get; set; }
+        public int IdCar { get; set; }
         public Car Car { get; set; }
     }
 }

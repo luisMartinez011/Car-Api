@@ -63,7 +63,7 @@ namespace CarApi.Controllers
                 var res = await _authRepository.InitiateAuthAsync(logInDto);
                 
                 //return new HttpResult( HttpStatusCode.Accepted)'
-                return Ok(res.AuthenticationResult);
+                return Ok(res.AuthenticationResult.AccessToken);
 
             }
             catch (Exception ex)

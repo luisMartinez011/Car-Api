@@ -2,16 +2,19 @@
   {
     "Id": 1,
     "Name": "Chevrolet",
-    "Country": 60
+    "Country": 60,
+    "Logo": "https://w7.pngwing.com/pngs/863/573/png-transparent-chevrolet-impala-car-general-motors-logo-chevrolet-logo-car-desktop-wallpaper-thumbnail.png"
   },
   {
     "Id": 2,
     "Name": "Nissan",
-    "Country": 92
+    "Country": 92,
+    "Logo": "https://w7.pngwing.com/pngs/178/117/png-transparent-nissan-rogue-car-logo-nissan-maxima-nissan-emblem-trademark-logo.png"
   },
   {
     "Id": 3,
     "Name": "Ford",
-    "Country": 60
+    "Country": 60,
+    "Logo": "https://w7.pngwing.com/pngs/468/848/png-transparent-logo-ford-logo-car-car-standard-pattern-flag-cars.png"
   }
 ]

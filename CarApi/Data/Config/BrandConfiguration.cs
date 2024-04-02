@@ -29,6 +29,8 @@ namespace CarApi.Data.Config
                     IdBrand = brandSeeder.Id,
                     Name = brandSeeder.Name,
                     IdCountry = brandSeeder.Country,
+                    Logo = brandSeeder.Logo,
+
                     CreatedAt = DateTime.UtcNow,
                     ModifiedAt = DateTime.UtcNow,
                 };
