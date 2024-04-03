@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarApi.Models
@@ -26,7 +27,9 @@ namespace CarApi.Models
         [Required]
         public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
+        [JsonIgnore]
         public ICollection<UserAddress> UserAddresses { get; set; }
+        [JsonIgnore]
         public ICollection<Brand> Brands { get; set; }
     }
 }

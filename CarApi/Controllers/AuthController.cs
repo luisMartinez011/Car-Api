@@ -2,6 +2,7 @@
 using CarApi.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using ServiceStack;
+using ServiceStack.Web;
 using System.Collections;
 using System.Net;
 
@@ -18,17 +19,23 @@ namespace CarApi.Controllers
             _authRepository = authRepository;
         }
 
-        
+        /// <summary>
+        /// SignUp a user. 
+        /// 
+        /// </summary>
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDto signUpDto)
         {
             try
             {
-                Guid userSub = await _authRepository.SignUpAsync(signUpDto);
+                Guid userId = await _authRepository.SignUpAsync(signUpDto);
+                await _authRepository.AddUser(signUpDto, userId);
 
-                await _authRepository.AddUser(signUpDto, userSub);
-
-                return Ok("User successfully registered");
+                string message = "User succesfully created";
+                object response = new { userId,
+                    message
+                    };
+                return Ok(response);
 
             }catch(Exception ex)
             {
@@ -37,6 +44,10 @@ namespace CarApi.Controllers
 
         }
 
+        /// <summary>
+        /// Confirm User with authCode. The authcode is sent via email
+        /// 
+        /// </summary>
         [HttpPost("ConfirmUser")]
         public async Task<IActionResult> ConfirmUser(string authCode, string userId)
         {
@@ -55,6 +66,10 @@ namespace CarApi.Controllers
 
         }
 
+        /// <summary>
+        /// Login a user who is already confirmed.
+        /// 
+        /// </summary>
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LogInDto logInDto)
         {

@@ -58,7 +58,9 @@ namespace CarApi.Controllers
             {
                 return NotFound();
             }
-            return await _context.Countries.ToListAsync();
+            return await _context.Countries
+                //.IgnoreAutoIncludes()
+                .ToListAsync();
         }
 
         /// <summary>

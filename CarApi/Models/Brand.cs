@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarApi.Models
@@ -15,6 +16,7 @@ namespace CarApi.Models
 
         [ForeignKey("Country")]
         public int IdCountry { get; set; }
+        [JsonIgnore]
         public Country Country { get; set; }
 
 
@@ -22,6 +24,7 @@ namespace CarApi.Models
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime ModifiedAt { get; set; }
+
 
         public ICollection<Car> Cars { get; set; }
 

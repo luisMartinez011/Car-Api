@@ -6,7 +6,6 @@ namespace CarApi.Models
     public class Car
     {
         [Key]
-        [Required]
         public int IdCar { get; set; }
         [Required]
         public string Name { get; set; }
