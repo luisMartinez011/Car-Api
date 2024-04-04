@@ -1,6 +1,8 @@
 ﻿using CarApi.Data.Repositories;
 using CarApi.DTOs;
+using CarApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ServiceStack;
 using ServiceStack.Web;
 using System.Collections;
@@ -76,9 +78,17 @@ namespace CarApi.Controllers
             try
             {
                 var res = await _authRepository.InitiateAuthAsync(logInDto);
-                
+
+                var userId = await _authRepository.GetUserId(logInDto.email);
+
+                var token = res.AuthenticationResult.AccessToken;
+                object response = new
+                {
+                    userId,
+                    token
+                };
                 //return new HttpResult( HttpStatusCode.Accepted)'
-                return Ok(res.AuthenticationResult.AccessToken);
+                return Ok(response);
 
             }
             catch (Exception ex)

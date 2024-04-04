@@ -3,6 +3,7 @@ using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Extensions.CognitoAuthentication;
 using CarApi.DTOs;
 using CarApi.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace CarApi.Data.Repositories
@@ -14,6 +15,7 @@ namespace CarApi.Data.Repositories
         Task AddUser(SignUpDto signUpDto, Guid userSub);
         Task<InitiateAuthResponse> InitiateAuthAsync(LogInDto logInDto);
         Task<bool> ConfirmSignupAsync(string authCode, string userId);
+        Task<Guid> GetUserId(string username);
     }
 
     public class AuthRepository: IAuthRepository
@@ -128,12 +130,22 @@ namespace CarApi.Data.Repositories
 
         }
 
-        
+        public async Task<Guid> GetUserId(string email)
+        {
+            Guid userId = await _dbContext.Users
+                .Where(u => u.Email == email)
+                .Select(x => x.IdUser)
+                .FirstOrDefaultAsync();
+                
+            return userId;
+
+        }
+
 
         public async Task<InitiateAuthResponse> InitiateAuthAsync(LogInDto logInDto)
         {
             var authParameters = new Dictionary<string, string>();
-            authParameters.Add("USERNAME", logInDto.userName);
+            authParameters.Add("USERNAME", logInDto.email);
             authParameters.Add("PASSWORD", logInDto.password);
 
             var authRequest = new InitiateAuthRequest
@@ -145,7 +157,7 @@ namespace CarApi.Data.Repositories
             };
 
             var response = await _cognitoService.InitiateAuthAsync(authRequest);
-            Console.WriteLine($"Result Challenge is : {response.ChallengeName}");
+            
 
             return response;
         }

@@ -1,4 +1,4 @@
 ﻿namespace CarApi.DTOs
 {
-    public record LogInDto(string clientId, string userName, string password);
+    public record LogInDto( string email, string password);
  }

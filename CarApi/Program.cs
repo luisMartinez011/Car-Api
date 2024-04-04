@@ -64,7 +64,7 @@ builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 // Aws configuration
 //builder.Services.AddAWSService<IAmazonCognitoIdentityProvider>();
 builder.Services.AddCognitoIdentity();
-
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 builder.Services.AddAuthentication(options =>
 {
