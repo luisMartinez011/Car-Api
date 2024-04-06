@@ -125,7 +125,6 @@ namespace CarApi.Data.Repositories
 
             var response = await _cognitoService.ResendConfirmationCodeAsync(codeRequest);
 
-            Console.WriteLine($"Method of delivery is {response.CodeDeliveryDetails.DeliveryMedium}");
 
             return response.CodeDeliveryDetails;
         }
@@ -167,6 +166,7 @@ namespace CarApi.Data.Repositories
             Guid userId = await _dbContext.Users
                 .Where(u => u.Email == email)
                 .Where(u=> u.IsConfirmed == true)
+                .OrderByDescending(m => m.CreatedAt)
                 .Select(x => x.IdUser)
                 .FirstOrDefaultAsync();
                 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CarApi.Models
 {
@@ -35,6 +36,7 @@ namespace CarApi.Models
 
         public UserAddress UserAddress { get; set; }
         //public ICollection<OrderDetail> OrderDetails { get; set; }
+        [JsonIgnore]
         public ICollection<Appointment> Appointments { get; set; }
 
     }

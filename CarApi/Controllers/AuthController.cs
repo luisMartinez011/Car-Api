@@ -77,7 +77,7 @@ namespace CarApi.Controllers
         /// Send a new confirmation code to a user.
         /// </summary>
         /// <param name="userId">The user Id who will receive the code.</param>
-        /// <returns>The delivery details.</returns>
+        ///  <response code="200">return confirmation message </response>
         [HttpPost("ResendConfirmationCode")]
         public async Task<IActionResult> ResendConfirmationCode(Guid userId)
         {
@@ -86,7 +86,7 @@ namespace CarApi.Controllers
                 var res = await _authRepository.ResendConfirmationCodeAsync( userId);
 
 
-                return Ok("User was confirmed");
+                return Ok("Check your email for your confirmation code");
 
             }
             catch (Exception ex)
