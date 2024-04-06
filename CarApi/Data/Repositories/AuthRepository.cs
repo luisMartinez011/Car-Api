@@ -5,6 +5,7 @@ using CarApi.DTOs;
 using CarApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Text;
 
 namespace CarApi.Data.Repositories
 {
@@ -14,8 +15,10 @@ namespace CarApi.Data.Repositories
         Task<Guid> SignUpAsync(SignUpDto signUpDto);
         Task AddUser(SignUpDto signUpDto, Guid userSub);
         Task<InitiateAuthResponse> InitiateAuthAsync(LogInDto logInDto);
-        Task<bool> ConfirmSignupAsync(string authCode, string userId);
+        Task<bool> ConfirmSignupAsync(string authCode, Guid userId);
         Task<Guid> GetUserId(string username);
+        Task<CodeDeliveryDetailsType> ResendConfirmationCodeAsync(Guid userId);
+
     }
 
     public class AuthRepository: IAuthRepository
@@ -87,14 +90,19 @@ namespace CarApi.Data.Repositories
             //return response.HttpStatusCode == HttpStatusCode.OK;
         }
 
-        public async Task<bool> ConfirmSignupAsync(string authCode, string userId)
+        public async Task<bool> ConfirmSignupAsync(string authCode, Guid userId)
         {
             var signUpRequest = new ConfirmSignUpRequest
             {
                 ClientId = clientId,
                 ConfirmationCode = authCode,
-                Username = userId,
+                Username = userId.ToString(),
             };
+
+            //Confirm the user in database
+            User user = await GetUserById(userId);
+            user.IsConfirmed = true;
+            _dbContext.SaveChanges();
 
             var response = await _cognitoService.ConfirmSignUpAsync(signUpRequest);
             
@@ -106,8 +114,29 @@ namespace CarApi.Data.Repositories
             return false;
         }
 
+       
+        public async Task<CodeDeliveryDetailsType> ResendConfirmationCodeAsync(Guid userId)
+        {
+            var codeRequest = new ResendConfirmationCodeRequest
+            {
+                ClientId = clientId,
+                Username = userId.ToString(),
+            };
+
+            var response = await _cognitoService.ResendConfirmationCodeAsync(codeRequest);
+
+            Console.WriteLine($"Method of delivery is {response.CodeDeliveryDetails.DeliveryMedium}");
+
+            return response.CodeDeliveryDetails;
+        }
+
+
         public async Task AddUser(SignUpDto signUpDto, Guid userSub)
         {
+            var bytes = new UTF8Encoding().GetBytes(signUpDto.password);
+            var hashBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
+            string encryptedPassword =  Convert.ToBase64String(hashBytes);
+
             User user = new User
             {
                 IdUser = userSub,
@@ -115,6 +144,7 @@ namespace CarApi.Data.Repositories
                 Username = signUpDto.userName,
                 FirstName = signUpDto.firstName,
                 LastName = signUpDto.lastName,
+                Password = encryptedPassword,
                 UserAddress = new UserAddress
                 {
                     Address = signUpDto.address,
@@ -130,10 +160,13 @@ namespace CarApi.Data.Repositories
 
         }
 
+        //Returns only the user id given an email
+        //The user needs to be authenticated
         public async Task<Guid> GetUserId(string email)
         {
             Guid userId = await _dbContext.Users
                 .Where(u => u.Email == email)
+                .Where(u=> u.IsConfirmed == true)
                 .Select(x => x.IdUser)
                 .FirstOrDefaultAsync();
                 
@@ -141,6 +174,18 @@ namespace CarApi.Data.Repositories
 
         }
 
+        //Returns the user given the userId
+        public async Task<User> GetUserById(Guid userId)
+        {
+            User user = await _dbContext.Users
+                .Where(u => u.IdUser == userId)
+                .FirstOrDefaultAsync();
+
+            
+
+            return user;
+
+        }
 
         public async Task<InitiateAuthResponse> InitiateAuthAsync(LogInDto logInDto)
         {

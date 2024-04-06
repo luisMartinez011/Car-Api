@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CarApi.Models
 {
@@ -9,6 +10,9 @@ namespace CarApi.Models
         public int IdCar { get; set; }
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string Model { get; set; }
         [Required]
         public float Year { get; set; }
         [Required]
@@ -25,9 +29,11 @@ namespace CarApi.Models
 
         [ForeignKey("Brand")]
         public int IdBrand { get; set; }
+        [JsonIgnore]
         public Brand Brand { get; set; }
 
         //public ICollection<OrderItem> OrderItem { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
+        [JsonIgnore]
+        protected ICollection<Appointment> Appointments { get; set; }
     }
 }

@@ -49,6 +49,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var Configuration = builder.Configuration;
+
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
         x => x.MigrationsHistoryTable("_EfMigrations", Configuration.GetSection("Schema").GetSection("User").Value)));
@@ -62,7 +63,6 @@ builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 
 
 // Aws configuration
-//builder.Services.AddAWSService<IAmazonCognitoIdentityProvider>();
 builder.Services.AddCognitoIdentity();
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
@@ -91,6 +91,21 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy
+                          .AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+
+                      });
+});
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -108,6 +123,10 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Verificacio
 
 app.UseHttpsRedirection();
 
+//Cors
+app.UseCors(MyAllowSpecificOrigins);
+
+//Auth
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -28,8 +28,9 @@ namespace CarApi.Models
         public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
 
         [JsonIgnore]
-        public ICollection<UserAddress> UserAddresses { get; set; }
+        
+        protected ICollection<UserAddress> UserAddresses { get; set; }
         [JsonIgnore]
-        public ICollection<Brand> Brands { get; set; }
+        protected ICollection<Brand> Brands { get; set; }
     }
 }

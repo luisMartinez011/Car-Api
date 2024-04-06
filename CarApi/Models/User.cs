@@ -23,10 +23,15 @@ namespace CarApi.Models
         [Required]
         public string LastName { get; set; }
 
+        [Required] 
+        public string Password { get; set; }
+
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Required]
         public DateTime ModifiedAt { get; set; } = DateTime.UtcNow;
+        [Required]
+        public Boolean IsConfirmed { get; set; } = false;
 
         public UserAddress UserAddress { get; set; }
         //public ICollection<OrderDetail> OrderDetails { get; set; }

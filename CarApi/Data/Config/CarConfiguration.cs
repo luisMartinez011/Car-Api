@@ -44,11 +44,12 @@ namespace CarApi.Data.Config
                 Car car = new Car
                 {
                     IdCar = index,
-                    Name = carSeeder.model,
+                    Model = carSeeder.model,
                     Year = carSeeder.year,
                     Price = carSeeder.price,
                     Image = carSeeder.image,
                     IdBrand = idBrand,
+                    Name = $"{carSeeder.brand} {carSeeder.model} {carSeeder.year}",
                     CreatedAt = DateTime.UtcNow,
                     ModifiedAt = DateTime.UtcNow,
                 };
