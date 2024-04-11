@@ -40,6 +40,7 @@ namespace CarApi.Controllers
           }
             return await _context.Appointments
                 .Where(x => x.IdUser== idUser)
+                .Include(x => x.Car)
                 .ToListAsync();
         }
 
