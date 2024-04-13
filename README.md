@@ -1,5 +1,14 @@
 <h1>Car-Api</h1>
 <br>
+
+<h2> Deployment AWS example
+</h2>
+
+```
+ dotnet lambda deploy-function
+```
+<br>
+
 <h2> appsettings.json example
 </h2>
 
@@ -27,4 +36,5 @@
   "AllowedHosts": "*"
 }
 ```
+
 
