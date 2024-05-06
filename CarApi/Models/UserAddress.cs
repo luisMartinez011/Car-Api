@@ -8,14 +8,10 @@ namespace CarApi.Models
     {
         [Key]
         public int IdUserAddress { get; set; }
-        [Required]
-        public string Address{ get; set; }
-        [Required]
-        public string City { get; set; }
-        [Required]
-        public int PostalCode { get; set; }
-        [Required]
-        public int Telephone { get; set; }
+        public string? Address{ get; set; }
+        public string? City { get; set; }
+        public int? PostalCode { get; set; }
+        public int? Telephone { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -28,7 +24,7 @@ namespace CarApi.Models
 
 
         [ForeignKey("Country")]
-        public int IdCountry { get; set; }
+        public int? IdCountry { get; set; }
         public Country Country { get; set; }
 
     }

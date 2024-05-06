@@ -68,7 +68,7 @@ namespace CarApi.Data.Repositories
                 new AttributeType { Name = "custom:postal_code", Value =   signUpDto.postalCode.ToString(), },
                 new AttributeType { Name = "custom:telephone", Value = signUpDto.telephone.ToString(), },
                 new AttributeType { Name = "custom:username", Value = signUpDto.userName, },
-                new AttributeType { Name = "address", Value = signUpDto.address, },
+                new AttributeType { Name = "address", Value = "Addres por defecto", },
                 
             };
 

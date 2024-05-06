@@ -63,7 +63,13 @@ namespace CarApi.Controllers
                 await _authRepository.ConfirmSignupAsync(authCode, userId);
 
 
-                return Ok("User was confirmed");
+                ResponseLogIn response = new ResponseLogIn
+                {
+                    UserId = userId,
+                    Token = token
+                };
+                return Ok(response);
+
 
             }
             catch (Exception ex)
